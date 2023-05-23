@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'playlist.dart';
 
 void main() {
   runApp(const MyApp());
@@ -62,7 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
   // }
   playLocal() async {
     // var result = await audioPlayer.play("assets/bodyback.mp3", isLocal: true);
-    int result = await audioPlayer.play(myplaylist[playerindex]["url"]);
+    // int result = await audioPlayer.play(myplaylist[playerindex]["url"]);
+    int result = await audioPlayer.play(ourplaylist.getUrl(playerindex));
     if(result == 1){
       print(">>>>>Success");
     }
@@ -77,6 +79,12 @@ class _MyHomePageState extends State<MyHomePage> {
     int result = await audioPlayer.resume();
     if (result == 1){
       print("....resume...");
+    }
+  }
+  hostop() async{
+    int result = await audioPlayer.stop();
+    if (result==1){
+      print(".....Now stop");
     }
   }
   bool playpause = true;
@@ -102,6 +110,12 @@ class _MyHomePageState extends State<MyHomePage> {
       "artist":"lay phyu",
     }
   ];
+  Playlist ourplaylist = Playlist();
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   ourplaylist.myplaylist[0].artist = "Banana";
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -139,15 +153,22 @@ class _MyHomePageState extends State<MyHomePage> {
               margin: const EdgeInsets.all(8.0),
               padding: const EdgeInsets.all(8.0),
               child: Image(
-                image: AssetImage('images/${myplaylist[playerindex]["alburm"]}'),
+                // image: AssetImage('images/${myplaylist[playerindex]["alburm"]}'),
+                // image: AssetImage('images/${ourplaylist.myplaylist[playerindex].artwork}'),
+                image: AssetImage('images/${ourplaylist.getArtwork(playerindex)}'),
                 ),
             ),
+            // Text(ourplaylist.myplaylist[playerindex].name),
+            // Text(ourplaylist.myplaylist[playerindex].artist),
+            Text(ourplaylist.getName(playerindex)),
+            Text(ourplaylist.getArtist(playerindex)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
                   icon: const Icon(Icons.skip_previous),
                   onPressed: (){
+                    hostop();
                     setState(() {
                       playerindex -=1;
                       if (playerindex <0){
@@ -184,6 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
               IconButton(
                   icon: const Icon(Icons.skip_next),
                   onPressed: (){
+                    hostop();
                     setState(() {
                       playerindex +=1;
                       if (playerindex >2){
