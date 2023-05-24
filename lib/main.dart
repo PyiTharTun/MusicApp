@@ -168,14 +168,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 IconButton(
                   icon: const Icon(Icons.skip_previous),
                   onPressed: (){
-                    hostop();
+                    
                     setState(() {
                       playerindex -=1;
                       if (playerindex <0){
                         playerindex = 2;
                         }
-                      playpause = true;
+                      if (resumeplay == 1){
+                      playLocal();}
                       
+                      print(playerindex);
                     });
                     
                 },
@@ -205,14 +207,13 @@ class _MyHomePageState extends State<MyHomePage> {
               IconButton(
                   icon: const Icon(Icons.skip_next),
                   onPressed: (){
-                    hostop();
                     setState(() {
                       playerindex +=1;
                       if (playerindex >2){
-                        playerindex = 0;
-                        }
-                      playpause = true;
-                      resumeplay = 0;
+                        playerindex = 0;}
+                      if (resumeplay == 1){
+                        playLocal();}
+                      
                     },);
                     
                 },
